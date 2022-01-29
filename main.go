@@ -20,6 +20,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("うまく動きました。")
+	fmt.Println("Hello World!")
 
 }
