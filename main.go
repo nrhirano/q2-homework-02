@@ -14,7 +14,7 @@ type User struct {
 	Age  int    `xorm:"age"`
 }
 
-func Insert(engine xorm.Engine) {
+func insert(engine xorm.Engine) {
 	user := User{
 		ID:   1,
 		Name: "tanaka",
@@ -29,7 +29,7 @@ func Insert(engine xorm.Engine) {
 	fmt.Printf("< Insert > ID:%d 名前:%s, 年齢:%d\n", user.ID, user.Name, user.Age)
 }
 
-func Get(engine xorm.Engine) {
+func get(engine xorm.Engine) {
 	user := User{}
 	result, err := engine.Where("ID = ?", 1).Get(&user)
 	if err != nil {
@@ -41,7 +41,7 @@ func Get(engine xorm.Engine) {
 	fmt.Printf("< Get > ID:%d 名前:%s, 年齢:%d\n", user.ID, user.Name, user.Age)
 }
 
-func CreateTable(engine xorm.Engine) {
+func createTable(engine xorm.Engine) {
 	err := engine.CreateTables(User{})
 	if err != nil {
 		log.Fatalf("テーブルの生成に失敗しました。: %v", err)
@@ -57,9 +57,9 @@ func main() {
 
 	fmt.Println("Hello World!")
 
-	CreateTable(*engine)
-	Insert(*engine)
-	Get(*engine)
+	createTable(*engine)
+	insert(*engine)
+	get(*engine)
 
 	defer engine.Close()
 }
