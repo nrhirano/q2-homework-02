@@ -6,7 +6,9 @@ RUN apk add --no-cache git
 
 WORKDIR ${PATH}
 
-COPY ["./go.mod","./main.go", ${PATH}]
+COPY main.go ${ROOT}
+
+COPY go.mod ${ROOT}
 
 RUN go mod download
 
