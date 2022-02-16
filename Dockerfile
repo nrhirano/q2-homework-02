@@ -4,9 +4,9 @@ ENV PATH=/usr/local/git/bin:$PATH
 
 RUN apk add --no-cache git
 
-WORKDIR PATH
+WORKDIR ${PATH}
 
-COPY ["./go.mod","./main.go", "/"]
+COPY ["./go.mod","./main.go", ${PATH}]
 
 RUN go mod download
 
