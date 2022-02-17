@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  app: # サービス名
+    depends_on:
+      - db
+    tty: true
+    volumes:
+      - ./:/go/src/app
+
+    build: # ビルドに使うDockerファイルのパス
+      context: .
+      dockerfile: ./Dockerfile
+
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      - MYSQL_DATABASE=sample_db
+      - MYSQL_ROOT_PASSWORD=root
+    command:
+      --character-set-server=utf8mb4
+    ports:
+      - 3306:3306

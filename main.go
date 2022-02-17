@@ -9,9 +9,44 @@ import (
 )
 
 type User struct {
-	Id   int64
-	Name string
-	Age  int
+	ID   int64  `xorm:"id pk autoincr"`
+	Name string `xorm:"name"`
+	Age  int    `xorm:"age"`
+}
+
+func insert(engine xorm.Engine) {
+	user := User{
+		ID:   1,
+		Name: "tanaka",
+		Age:  20,
+	}
+
+	_, err := engine.Table("user").Insert(user)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("< Insert > ID:%d 名前:%s, 年齢:%d\n", user.ID, user.Name, user.Age)
+}
+
+func get(engine xorm.Engine) {
+	user := User{}
+	result, err := engine.Where("ID = ?", 1).Get(&user)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if !result {
+		log.Fatal("Not Found")
+	}
+	fmt.Printf("< Get > ID:%d 名前:%s, 年齢:%d\n", user.ID, user.Name, user.Age)
+}
+
+func createTable(engine xorm.Engine) {
+	err := engine.CreateTables(User{})
+	if err != nil {
+		log.Fatalf("テーブルの生成に失敗しました。: %v", err)
+	}
+	fmt.Println("テーブル作成が成功しました。")
 }
 
 func main() {
@@ -22,4 +57,9 @@ func main() {
 
 	fmt.Println("Hello World!")
 
+	createTable(*engine)
+	insert(*engine)
+	get(*engine)
+
+	defer engine.Close()
 }
